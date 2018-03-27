@@ -1,5 +1,5 @@
 ﻿// Copyright © Microsoft Corporation.  All Rights Reserved.
-// This code released under the terms of the 
+// This code released under the terms of the
 // Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html.)
 //
 //Copyright (C) Microsoft Corporation.  All rights reserved.
@@ -24,13 +24,12 @@ namespace SampleQueries
 		{
 			List<SampleHarness> harnesses = new List<SampleHarness>();
 
-			
 			LinqSamples linqHarness = new LinqSamples();
 			harnesses.Add(linqHarness);
-						
+
 			Application.EnableVisualStyles();
-				
-			using (SampleForm form = new SampleForm("HomeWork - Mihail Romanov", harnesses))
+
+			using (SampleForm form = new SampleForm("HomeWork - Lizaveta Yeutushenka", harnesses))
 			{
 				form.ShowDialog();
 			}

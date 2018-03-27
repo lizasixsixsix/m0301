@@ -1,5 +1,5 @@
 ﻿// Copyright © Microsoft Corporation.  All Rights Reserved.
-// This code released under the terms of the 
+// This code released under the terms of the
 // Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html.)
 //
 //Copyright (C) Microsoft Corporation.  All rights reserved.
@@ -40,7 +40,7 @@ namespace SampleSupport
             }
 
             String allCode = readFile(Application.StartupPath + @"\..\..\" + codeFile);
-            
+
             var methods =
                 from sm in samplesType.GetMethods(BindingFlags.Public|BindingFlags.Instance|
                                                  BindingFlags.DeclaredOnly|BindingFlags.Static)
@@ -81,7 +81,7 @@ namespace SampleSupport
 
                 StringBuilder methodCode = new StringBuilder();
                 methodCode.Append(getCodeBlock(allCode, "void " + method.Name));
-                
+
                 foreach (MethodInfo lm in linkedMethods)
                 {
                     methodCode.Append(Environment.NewLine);
@@ -93,9 +93,9 @@ namespace SampleSupport
                     methodCode.Append(Environment.NewLine);
                     methodCode.Append(getCodeBlock(allCode, "class " + lt.Name));
                 }
-                
+
                 Sample sample = new Sample(this, method, methodCategory, methodTitle, methodDescription, methodCode.ToString());
-                
+
                 samples.Add(m, sample);
                 m++;
             }
@@ -109,7 +109,7 @@ namespace SampleSupport
                     fileContents = reader.ReadToEnd();
             else
                 fileContents = "";
-            
+
             return fileContents;
         }
 
@@ -144,7 +144,7 @@ namespace SampleSupport
                         case "System.String":   return "string";
                         case "System.Char":     return "char";
                         case "System.Boolean":  return "bool";
-                        
+
                         /* other primitive types omitted */
 
                         default:
@@ -160,7 +160,7 @@ namespace SampleSupport
         private static string getCodeBlock(string allCode, string blockName)
         {
             int blockStart = allCode.IndexOf(blockName, StringComparison.OrdinalIgnoreCase);
-            
+
             if (blockStart == -1)
                 return "// " + blockName + " code not found";
             blockStart = allCode.LastIndexOf(Environment.NewLine, blockStart, StringComparison.OrdinalIgnoreCase);
@@ -190,7 +190,7 @@ namespace SampleSupport
             } while (pos < allCode.Length && !(c == '}' && braceCount == 0));
 
             int blockEnd = pos;
-            
+
             string blockCode = allCode.Substring(blockStart, blockEnd - blockStart + 1);
 
             return removeIndent(blockCode);
@@ -229,13 +229,13 @@ namespace SampleSupport
         {
             get { return _Title; }
         }
-        
+
         public StreamWriter OutputStreamWriter
         {
             get { return _OutputStreamWriter; }
-        }        
+        }
 
-        
+
         public void RunAllSamples() {
             TextWriter oldConsoleOut = Console.Out;
             Console.SetOut(StreamWriter.Null);
@@ -284,13 +284,13 @@ namespace SampleSupport
             this._Description = description;
             this._Code = code;
         }
-        
+
 
         public SampleHarness Harness
         {
             get { return _Harness; }
         }
-        
+
         public MethodInfo Method
         {
             get { return _Method; }
@@ -300,22 +300,22 @@ namespace SampleSupport
         {
             get { return _Category; }
         }
-        
+
         public string Title
         {
             get { return _Title; }
         }
-        
+
         public string Description
         {
             get { return _Description; }
         }
-        
+
         public string Code
         {
             get { return _Code; }
         }
-        
+
 
         public void Invoke()
         {

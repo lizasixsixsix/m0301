@@ -1,5 +1,5 @@
 ﻿// Copyright © Microsoft Corporation.  All Rights Reserved.
-// This code released under the terms of the 
+// This code released under the terms of the
 // Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html.)
 //
 //Copyright (C) Microsoft Corporation.  All rights reserved.
@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 using SampleSupport;
 using Task.Data;
+using System.Data.Objects;
 
 // Version Mad01
 
@@ -22,7 +23,6 @@ namespace SampleQueries
 	[Prefix("Linq")]
 	public class LinqSamples : SampleHarness
 	{
-
 		private DataSource dataSource = new DataSource();
 
 		[Category("Restriction Operators")]
@@ -38,6 +38,7 @@ namespace SampleQueries
 				select num;
 
 			Console.WriteLine("Numbers < 5:");
+
 			foreach (var x in lowNums)
 			{
 				Console.WriteLine(x);
@@ -47,7 +48,6 @@ namespace SampleQueries
 		[Category("Restriction Operators")]
 		[Title("Where - Task 2")]
 		[Description("This sample return return all presented in market products")]
-
 		public void Linq2()
 		{
 			var products =
@@ -60,6 +60,5 @@ namespace SampleQueries
 				ObjectDumper.Write(p);
 			}
 		}
-
 	}
 }
