@@ -75,10 +75,10 @@ namespace SampleQueries
         }
     }
 
-    public static class DataSourceExtensions
+    public static class SourceExtensions
     {
-        public static TResult Execute<TResult>(this DataSource source,
-                                               Func<DataSource, TResult> stuff)
+        public static TResult Execute<TSource, TResult>(this TSource source,
+                                                        Func<TSource, TResult> stuff)
         {
             return stuff(source);
         }
