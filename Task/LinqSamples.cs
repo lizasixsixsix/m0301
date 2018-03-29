@@ -83,4 +83,16 @@ namespace SampleQueries
             return stuff(source);
         }
     }
+
+    public static class EnumerableExtensions
+    {
+        public static void ForEach<T>(this IEnumerable<T> source,
+                                      Action<T> stuff)
+        {
+            foreach (var element in source)
+            {
+                stuff(element);
+            }
+        }
+    }
 }
