@@ -72,7 +72,7 @@ namespace SampleQueries
                     source.Customers.Select(
                         c => new
                         {
-                            cust = c.CustomerID,
+                            cust = c.CompanyName,
                             sum = c.Orders.Select(o => o.Total).Sum()
                         })
                         .Where(c => c.sum > x)
@@ -83,7 +83,36 @@ namespace SampleQueries
 
             foreach (var c in customers)
             {
-                ObjectDumper.Write($"{c.Key} : {c.Value}");
+                ObjectDumper.Write($"{c.Key,-40} : {c.Value}");
+            }
+        }
+
+        [Category("My Tasks")]
+        [Title("Task 02.1")]
+        [Description("With Grouping")]
+        public void Linq02()
+        {
+            var groupedSuppliers = dataSource.Suppliers.GroupBy(
+                s => new
+                {
+                    country = s.Country,
+                    city = s.City
+                },
+                s => s.SupplierName);
+
+            var customersSuppliers = dataSource.Customers.Select(
+                c => new
+                {
+                    cust = c.CustomerID,
+                    supps = groupedSuppliers.Where(
+                        g => g.Key.country == c.Country
+                             && g.Key.city == c.City
+                        ).FirstOrDefault()?.ToList()
+                });
+
+            foreach (var cs in customersSuppliers)
+            {
+                ObjectDumper.Write($"{cs.supps}");
             }
         }
     }
