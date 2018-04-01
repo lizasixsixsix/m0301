@@ -67,17 +67,21 @@ namespace SampleQueries
         [Description("Reusable Query")]
         public void Linq01()
         {
-            var query = new Func<DataSource, int, IEnumerable<Customer>>(
+            var query = new Func<DataSource, decimal, IDictionary<string, decimal>>(
                 (source, x) =>
-                    source.Customers.Where(
-                        c => c.Orders.Select(o => o.Total).Sum() > x));
+                    source.Customers.Select(
+                        c => new KeyValuePair<string, decimal>(
+                            c.CustomerID,
+                            c.Orders.Select(o => o.Total).Sum()))
+                        .Where(c => c.Value > x)
+                        .ToDictionary(c => c.Key, c => c.Value));
 
             var customers = dataSource.Execute(
                 source => query(source, 500));
 
             foreach (var c in customers)
             {
-                ObjectDumper.Write(c);
+                ObjectDumper.Write($"{c.Key} : {c.Value}");
             }
         }
     }
