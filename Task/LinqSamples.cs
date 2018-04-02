@@ -55,12 +55,13 @@ namespace SampleQueries
             }
         }
 
-        ///                         .            .          .
-        ///  ,-,-. . .    ,-. ,-. ,-| ,-.    ,-. |- ,-. ,-. |- ,-.
-        ///  | | | | |    |   | | | | |-'    `-. |  ,-| |   |  `-.
-        ///  ' ' ' `-|    `-' `-' `-^ `-'    `-' `' `-^ '   `' `-'
-        ///         /|
-        ///        `-'
+        ///  %%     %% %%    %%     %%%%%%   %%%%%%%  %%%%%%%%  %%%%%%%%  %
+        ///  %%%   %%%  %%  %%     %%    %% %%     %% %%     %% %%       %%%
+        ///  %%%% %%%%   %%%%      %%       %%     %% %%     %% %%        %
+        ///  %% %%% %%    %%       %%       %%     %% %%     %% %%%%%%
+        ///  %%     %%    %%       %%       %%     %% %%     %% %%        %
+        ///  %%     %%    %%       %%    %% %%     %% %%     %% %%       %%%
+        ///  %%     %%    %%        %%%%%%   %%%%%%%  %%%%%%%%  %%%%%%%%  %
 
         [Category("My Tasks")]
         [Title("Task 01")]
@@ -160,6 +161,21 @@ namespace SampleQueries
                 }
             }
         }
+
+        [Category("My Tasks")]
+        [Title("Task 03")]
+        [Description("Any Greater than X")]
+        public void Linq03()
+        {
+            var customers = dataSource.Customers.Where(
+                c => c.Orders.Any(o => o.Total > 500)
+            );
+
+            foreach (var c in customers)
+            {
+                ObjectDumper.Write(c.CompanyName);
+            }
+        }
     }
 
     public static class SourceExtensions
@@ -182,10 +198,4 @@ namespace SampleQueries
             }
         }
     }
-
-    ///  ,-,-. . .    ,-. ,-. ,-| ,-.    ,-. ,-. ,-| ,-.
-    ///  | | | | |    |   | | | | |-'    |-' | | | | `-.
-    ///  ' ' ' `-|    `-' `-' `-^ `-'    `-' ' ' `-^ `-'
-    ///         /|
-    ///        `-'
 }
