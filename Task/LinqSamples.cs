@@ -167,9 +167,13 @@ namespace SampleQueries
         [Description("Any Greater than X")]
         public void Linq03()
         {
-            var customers = dataSource.Customers.Where(
-                c => c.Orders.Any(o => o.Total > 500)
-            );
+            var query = new Func<DataSource, decimal, IEnumerable<Customer>>(
+                (source, x) =>
+                    source.Customers.Where(
+                        c => c.Orders.Any(o => o.Total > x)));
+
+            var customers = dataSource.Execute(
+                source => query(source, 500));
 
             foreach (var c in customers)
             {
