@@ -103,22 +103,23 @@ namespace SampleQueries
             var customersSuppliers = dataSource.Customers.Select(
                 c => new
                 {
-                    cust = c.CustomerID,
+                    cust = c.CompanyName,
                     supps = groupedSuppliers.Where(
                         g => g.Key.country == c.Country
                              && g.Key.city == c.City
                         )
-                });
+                })
+                .Where(c => c.supps.Any());
 
             foreach (var c in customersSuppliers)
             {
-                ObjectDumper.Write($"{c.cust}");
+                ObjectDumper.Write($"{c.cust} :");
 
                 foreach (var s in c.supps)
                 {
                     foreach (var ss in s)
                     {
-                        ObjectDumper.Write($"{ss}");
+                        ObjectDumper.Write($"    * {ss}");
                     }
                 }
             }
