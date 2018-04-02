@@ -107,12 +107,20 @@ namespace SampleQueries
                     supps = groupedSuppliers.Where(
                         g => g.Key.country == c.Country
                              && g.Key.city == c.City
-                        ).FirstOrDefault()?.ToList()
+                        )
                 });
 
-            foreach (var cs in customersSuppliers)
+            foreach (var c in customersSuppliers)
             {
-                ObjectDumper.Write($"{cs.supps}");
+                ObjectDumper.Write($"{c.cust}");
+
+                foreach (var s in c.supps)
+                {
+                    foreach (var ss in s)
+                    {
+                        ObjectDumper.Write($"{ss}");
+                    }
+                }
             }
         }
     }
