@@ -256,6 +256,43 @@ namespace SampleQueries
                                    $"{c.Phone,10}");
             }
         }
+
+        [Category("My Tasks")]
+        [Title("Task 07")]
+        [Description("Group Products")]
+        public void Linq07()
+        {
+            var productGroups = dataSource.Products
+                .GroupBy(p => p.Category);
+
+            var newProductGroups = productGroups.Reverse().Skip(1).Reverse().Select(
+                g => new
+                {
+                    key = g.Key,
+                    prods = g.OrderBy(gg => gg.UnitsInStock)
+                })
+                .Concat(productGroups.Reverse().Take(1).Select(
+                    g => new
+                    {
+                        key = g.Key,
+                        prods = g.OrderBy(gg => gg.UnitPrice)
+                    })
+                );
+
+            foreach (var g in newProductGroups)
+            {
+                ObjectDumper.Write($"*** {g.key} ***");
+
+                foreach (var p in g.prods)
+                {
+                    ObjectDumper.Write($"{p.ProductName,-40} : " +
+                                       $"{p.UnitsInStock,10} : " +
+                                       $"{p.UnitPrice,10}");
+                }
+
+                ObjectDumper.Write("");
+            }
+        }
     }
 
     public static class SourceExtensions
