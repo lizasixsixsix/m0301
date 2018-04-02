@@ -206,6 +206,37 @@ namespace SampleQueries
                 ObjectDumper.Write($"{c.cust,-40} : {c.date:MM/dd/yyyy HH:mm:ss tt}");
             }
         }
+
+        [Category("My Tasks")]
+        [Title("Task 05")]
+        [Description("Multiple Order By")]
+        public void Linq05()
+        {
+            var customers = dataSource.Customers
+                .Zip(
+                    dataSource.Customers.Where(c => c.Orders.Any())
+                        .Select(
+                        d => d.Orders.Min(o => o.OrderDate)
+                        ),
+                    (c, d) => new
+                    {
+                        cust = c.CompanyName,
+                        sum = c.Orders.Sum(o => o.Total),
+                        date = d
+                    }
+                )
+                .OrderBy(c => c.date.Year)
+                .ThenBy(c => c.date.Month)
+                .ThenByDescending(c => c.sum)
+                .ThenBy(c => c.cust);
+
+            foreach (var c in customers)
+            {
+                ObjectDumper.Write($"{c.cust,-40} :" +
+                                   $"{c.date:yyyy}, {c.date:MM}, : " +
+                                   $"{c.sum,10}");
+            }
+        }
     }
 
     public static class SourceExtensions
