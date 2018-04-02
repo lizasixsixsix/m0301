@@ -180,6 +180,32 @@ namespace SampleQueries
                 ObjectDumper.Write(c.CompanyName);
             }
         }
+
+        [Category("My Tasks")]
+        [Title("Task 04")]
+        [Description("Earliest Order")]
+        public void Linq04()
+        {
+            var customers = dataSource.Customers.Select(
+                c => c.CompanyName
+                )
+                .Zip(
+                    dataSource.Customers.Where(c => c.Orders.Any())
+                        .Select(
+                        d => d.Orders.Min(o => o.OrderDate)
+                        ),
+                    (c, d) => new
+                    {
+                        cust = c,
+                        date = d
+                    }
+                );
+
+            foreach (var c in customers)
+            {
+                ObjectDumper.Write($"{c.cust,-40} : {c.date:MM/dd/yyyy HH:mm:ss tt}");
+            }
+        }
     }
 
     public static class SourceExtensions
