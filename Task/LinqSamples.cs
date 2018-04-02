@@ -265,13 +265,15 @@ namespace SampleQueries
             var productGroups = dataSource.Products
                 .GroupBy(p => p.Category);
 
-            var newProductGroups = productGroups.Reverse().Skip(1).Reverse().Select(
+            var count = productGroups.Count();
+
+            var newProductGroups = productGroups.Take(count - 1).Select(
                 g => new
                 {
                     key = g.Key,
                     prods = g.OrderBy(gg => gg.UnitsInStock)
                 })
-                .Concat(productGroups.Reverse().Take(1).Select(
+                .Concat(productGroups.Skip(count - 1).Select(
                     g => new
                     {
                         key = g.Key,
