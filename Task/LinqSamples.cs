@@ -295,6 +295,41 @@ namespace SampleQueries
                 ObjectDumper.Write("");
             }
         }
+
+        [Category("My Tasks")]
+        [Title("Task 08")]
+        [Description("Group by Range")]
+        public void Linq08()
+        {
+            var lowerAffordable = 10;
+            var upperAffordable = 20;
+
+            var productGroups = dataSource.Products.Select(
+                p => new
+                {
+                    p.ProductName,
+                    p.UnitPrice,
+                    range = p.UnitPrice < lowerAffordable
+                                ? "low"
+                                : p.UnitPrice <= upperAffordable
+                                    ? "affordable"
+                                    : "high"
+                })
+                .GroupBy(p => p.range);
+
+            foreach (var g in productGroups)
+            {
+                ObjectDumper.Write($"*** {g.Key} ***");
+
+                foreach (var p in g)
+                {
+                    ObjectDumper.Write($"{p.ProductName,-40} : " +
+                                       $"{p.UnitPrice,10}");
+                }
+
+                ObjectDumper.Write("");
+            }
+        }
     }
 
     public static class SourceExtensions
