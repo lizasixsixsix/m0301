@@ -90,7 +90,7 @@ namespace SampleQueries
         [Category("My Tasks")]
         [Title("Task 02.1")]
         [Description("With Grouping")]
-        public void Linq02()
+        public void Linq021()
         {
             var groupedSuppliers = dataSource.Suppliers.GroupBy(
                 s => new
@@ -121,6 +121,42 @@ namespace SampleQueries
                     {
                         ObjectDumper.Write($"    * {ss}");
                     }
+                }
+            }
+        }
+
+        [Category("My Tasks")]
+        [Title("Task 02.2")]
+        [Description("With Join")]
+        public void Linq022()
+        {
+            var customersSuppliers = dataSource.Customers.GroupJoin(
+                dataSource.Suppliers,
+                c => new
+                {
+                    country = c.Country,
+                    city = c.City
+                },
+                s => new
+                {
+                    country = s.Country,
+                    city = s.City
+                },
+                (c, s) => new
+                {
+                    cust = c.CompanyName,
+                    supps = s.Select(ss => ss.SupplierName)
+                }
+            )
+            .Where(cc => cc.supps.Any());
+
+            foreach (var c in customersSuppliers)
+            {
+                ObjectDumper.Write($"{c.cust} :");
+
+                foreach (var s in c.supps)
+                {
+                    ObjectDumper.Write($"    * {s}");
                 }
             }
         }
