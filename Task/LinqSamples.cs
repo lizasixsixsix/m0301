@@ -8,7 +8,7 @@ using SampleSupport;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Text.RegularExpressions;
 using Task.Data;
 
 namespace SampleQueries
@@ -232,9 +232,28 @@ namespace SampleQueries
 
             foreach (var c in customers)
             {
-                ObjectDumper.Write($"{c.cust,-40} :" +
+                ObjectDumper.Write($"{c.cust,-40} : " +
                                    $"{c.date:yyyy}, {c.date:MM}, : " +
                                    $"{c.sum,10}");
+            }
+        }
+
+        [Category("My Tasks")]
+        [Title("Task 06")]
+        [Description("Wrong Address Fields")]
+        public void Linq06()
+        {
+            var customers = dataSource.Customers
+                .Where(c => !String.IsNullOrEmpty(c.PostalCode) && !Regex.IsMatch(c.PostalCode, @"^[\d-]+$")
+                            || String.IsNullOrEmpty(c.Region)
+                            || !String.IsNullOrEmpty(c.Phone) && !Regex.IsMatch(c.Phone, @"^\(\d+\)"));
+
+            foreach (var c in customers)
+            {
+                ObjectDumper.Write($"{c.CompanyName,-36} : " +
+                                   $"{c.PostalCode,10} : " +
+                                   $"{c.Region,13} : " +
+                                   $"{c.Phone,10}");
             }
         }
     }
